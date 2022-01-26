@@ -8,6 +8,7 @@ import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.service.BaseService;
+import com.xuecheng.search.config.DiscussPost;
 import com.xuecheng.search.config.ElasticsearchConfig;
 import com.xuecheng.search.dao.CourseRepository;
 import com.xuecheng.search.dao.EsTeachplanMediaPubRepository;
@@ -19,19 +20,22 @@ import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.SearchResultMapper;
+//import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
 import org.springframework.data.elasticsearch.core.query.FetchSourceFilter;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 @Slf4j
@@ -41,7 +45,7 @@ public class EsCourseService extends BaseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    @Autowired
+    @Resource
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @Autowired
@@ -79,35 +83,36 @@ public class EsCourseService extends BaseService {
         // 高亮设置
         nativeSearchQueryBuilder.withHighlightFields(new HighlightBuilder.Field("name").preTags("<font class='eslight'>").postTags("</font>"));
 
-        AggregatedPage<EsCoursePub> esCoursePubPage = elasticsearchTemplate.queryForPage(nativeSearchQueryBuilder.build(), EsCoursePub.class, new SearchResultMapper() {
-            @Override
-            public <T> AggregatedPage<T> mapResults(SearchResponse response, Class<T> clazz, Pageable pageable) {
-                List<EsCoursePub> chunk = new ArrayList<>();
-                for (SearchHit searchHit : response.getHits()) {
-                    if (response.getHits().getHits().length <= 0) {
-                        return null;
-                    }
-                    EsCoursePub coursePub =
-                            JSON.parseObject(JSON.toJSONString(searchHit.getSource()), EsCoursePub.class);
-                    HighlightField nameField = searchHit.getHighlightFields().get("name");
-                    if (nameField != null) {
-                        coursePub.setName(nameField.fragments()[0].toString());
-                    }
-
-                    chunk.add(coursePub);
-                }
-                if (chunk.size() > 0) {
-                    return new AggregatedPageImpl<>((List<T>) chunk);
-                }
-                return null;
-            }
-        });
+//        AggregatedPage<EsCoursePub> esCoursePubPage = elasticsearchTemplate.queryForPage(nativeSearchQueryBuilder.build(), EsCoursePub.class, new DiscussPost() {
+//            @Override
+//            public <T> AggregatedPage<T> mapResults(SearchResponse response, Class<T> clazz, Pageable pageable) {
+//                List<EsCoursePub> chunk = new ArrayList<>();
+//
+//                for (SearchHit searchHit : response.getHits()) {
+//                    if (response.getHits().getHits().length <= 0) {
+//                        return null;
+//                    }
+//                    EsCoursePub coursePub =
+//                            JSON.parseObject(JSON.toJSONString(searchHit.getHighlightFields()), EsCoursePub.class);
+//                    HighlightField nameField = searchHit.getHighlightFields().get("name");
+//                    if (nameField != null) {
+//                        coursePub.setName(nameField.fragments()[0].toString());
+//                    }
+//
+//                    chunk.add(coursePub);
+//                }
+//                if (chunk.size() > 0) {
+//                    return new AggregatedPageImpl<>((List<T>) chunk);
+//                }
+//                return null;
+//            }
+//        });
 
 
         // 返回结果
-        QueryResult<EsCoursePub> esCoursePubQueryResult = new QueryResult<>(esCoursePubPage.getContent(), esCoursePubPage.getTotalElements());
-
-        return new QueryResponseResult(CommonCode.SUCCESS, esCoursePubQueryResult);
+//        QueryResult<EsCoursePub> esCoursePubQueryResult = new QueryResult<>(esCoursePubPage.getContent(), esCoursePubPage.getTotalElements());
+//        new QueryResponseResult(CommonCode.SUCCESS, esCoursePubQueryResult);
+        return null;
     }
 
     /**
@@ -156,9 +161,12 @@ public class EsCourseService extends BaseService {
 
         // 查询条件
         nativeSearchQueryBuilder.withQuery(QueryBuilders.termQuery("id", id));
-
-        AggregatedPage<EsCoursePub> queryForPage = elasticsearchTemplate.queryForPage(nativeSearchQueryBuilder.build(), EsCoursePub.class);
-        queryForPage.getContent().forEach(coursePub -> result.put(coursePub.getId(), coursePub));
+    
+        NativeSearchQuery query = nativeSearchQueryBuilder.build();
+        Class<EsCoursePub> esCoursePubClass = EsCoursePub.class;
+//        elasticsearchTemplate.queryForObject(query,esCoursePubClass)
+//        AggregatedPage<EsCoursePub> queryForPage = elasticsearchTemplate.queryForPage(, EsCoursePub.class);
+//        queryForPage.getContent().forEach(coursePub -> result.put(coursePub.getId(), coursePub));
 
         return result;
     }
@@ -177,7 +185,7 @@ public class EsCourseService extends BaseService {
 
         // 查询条件
         nativeSearchQueryBuilder.withQuery(QueryBuilders.termQuery("teachplan_id", Arrays.stream(teachplanIds).reduce((a, b) -> a + "," +b).get()));
-
-        return elasticsearchTemplate.queryForList(nativeSearchQueryBuilder.build(), EsTeachplanMediaPub.class);
+//        elasticsearchTemplate.queryForList(nativeSearchQueryBuilder.build(), EsTeachplanMediaPub.class);
+        return null;
     }
 }
