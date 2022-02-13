@@ -5,9 +5,9 @@ spring:
     name: xc-service-manage-order
   datasource:
     druid:
-      url: jdbc:mysql://192.168.136.110:3306/xc_order?characterEncoding=utf-8
-      username: root
-      password: 123456
+      url: jdbc:mysql://39.107.236.181:3306/xc_order?characterEncoding=utf-8
+      username: shitou
+      password: Flg@19891014
       driverClassName: com.mysql.jdbc.Driver
       initialSize: 5  #初始建立连接数量
       minIdle: 5  #最小连接数量
@@ -19,7 +19,7 @@ spring:
       minEvictableIdleTimeMillis: 300000  #连接在连接池的最小生存时间（毫秒）
 #rabbitmq配置
   rabbitmq:
-    host: 192.168.136.110
+    host: 127.0.0.1
     port: 5672
     username: guest
     password: guest

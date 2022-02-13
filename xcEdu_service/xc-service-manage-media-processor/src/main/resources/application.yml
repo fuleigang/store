@@ -5,15 +5,15 @@ spring:
     name: xc-service-manage-media-processor
   data:
     mongodb:
-      host: 192.168.136.110
+      host: 39.107.236.181
       port: 27017
       database: xc_media
   #rabbitmq配置
   rabbitmq:
-    host: 192.168.136.110
+    host: 127.0.0.1
     port: 5672
-    username: xcEdu
-    password: 123456
+    username: guest
+    password: guest
     virtual-host: /
 xc-service-manage-media:
   mq:
