@@ -1,6 +1,6 @@
 package com.xuecheng.cms_manage_client.config;
 
-//import com.mongodb.client.MongoClient;
+import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MongoConfig {
 
-//    @Value("${spring.data.mongodb.database}")
-//    private String database;
-//
-//    @Bean
-//    public GridFSBucket gridFSBucket(MongoClient mongoClient) {
-//        MongoDatabase database = mongoClient.getDatabase(this.database);
-//        return GridFSBuckets.create(database);
-//    }
+    @Value("${spring.data.mongodb.database}")
+    private String database;
+
+    @Bean
+    public GridFSBucket gridFSBucket(MongoClient mongoClient) {
+        MongoDatabase database = mongoClient.getDatabase(this.database);
+        return GridFSBuckets.create(database);
+    }
 
 }
