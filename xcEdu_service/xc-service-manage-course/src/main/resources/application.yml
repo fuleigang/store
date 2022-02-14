@@ -4,8 +4,9 @@ spring:
   application:
     name: xc-service-manage-course
   datasource:
-    druid:
-      url: jdbc:mysql://39.107.236.181:3306/xc_course?characterEncoding=utf-8
+#    druid:
+#      url: jdbc:mysql://39.107.236.181:3306/xc_course?characterEncoding=utf-8
+      url: ${MYSQL_URL:jdbc:mysql://39.107.236.181:3306/xc_course?characterEncoding=utf-8}
       username: shitou
       password: Flg@19891014
       driverClassName: com.mysql.jdbc.Driver
@@ -20,6 +21,8 @@ spring:
   data:
     mongodb:
       host: 39.107.236.181
+      port: 27017
+      database: xc_cms
 mybatis:
   mapper-locations: classpath:com/xuecheng/manage_course/dao/*Mapper.xml
 eureka:
