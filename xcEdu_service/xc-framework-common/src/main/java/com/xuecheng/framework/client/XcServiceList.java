@@ -2,7 +2,7 @@ package com.xuecheng.framework.client;
 
 
 public class XcServiceList {
-    public static final String XC_GOVERN_CENTER = "xc-govern-center";
+    public static final String XC_GOVERN_CENTER = "xc-eureka";
     public static final String XC_SERVICE_PORTALVIEW = "xc-service-portalview";
     public static final String XC_SERVICE_SEARCH = "xc-service-search";
     public static final String XC_SERVICE_MANAGE_COURSE = "xc-service-manage-course";

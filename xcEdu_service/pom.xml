@@ -17,7 +17,7 @@
         <module>xc-framework-common</module>
         <module>xc-framework-model</module>
         <module>xc-framework-utils</module>
-        <module>xc-govern-center</module>
+        <module>xc-eureka</module>
         <module>xc-service-ucenter</module>
         <module>xc-govern-gateway</module>
         <module>xc-service-manage-order</module>
